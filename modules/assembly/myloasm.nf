@@ -30,7 +30,7 @@ process myloasm {
 
 	cat <<-END_LOCATION > location_${sample_id}.csv
 	sampleID,contigs
-	${sample_id},${params.outdir}/assembly/myloasm/myloasm_${sample_id}/assembly.fasta
+	${sample_id}_myloasm,${params.outdir}/assembly/myloasm/myloasm_${sample_id}/assembly.fasta
 	END_LOCATION
 
 	"""
