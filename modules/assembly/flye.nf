@@ -24,7 +24,7 @@ process flye {
 
 	cat <<-END_LOCATION > location_${sample_id}.csv
 	sampleID,contigs
-	${sample_id},${params.outdir}/assembly/flye/flye_${sample_id}/assembly.fasta
+	${sample_id}_flye,${params.outdir}/assembly/flye/flye_${sample_id}/assembly.fasta
 	END_LOCATION
 
 	"""
