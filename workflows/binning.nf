@@ -105,6 +105,3 @@ workflow {
         .collectFile(name: params.outdir + '/versions_binning.yml')
 }
 
-workflow.onComplete {
-    log.info ( workflow.success ? "\nBinning is done! Yay!\n" : "Oops .. something went wrong" )
-}

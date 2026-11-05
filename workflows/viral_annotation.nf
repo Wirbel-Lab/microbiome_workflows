@@ -45,6 +45,4 @@ workflow {
     .collectFile(name: params.outdir + '/versions_viral_annotation.yml')
 }
 
-workflow.onComplete {
-	log.info ( workflow.success ? "\nViral annotation is done! Yay!\n" : "Oops .. something went wrong" )
-}
+

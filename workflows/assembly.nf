@@ -63,6 +63,4 @@ workflow {
 	ch_assembly.location.collectFile(name: params.outdir + '/stats/assemblies.csv', keepHeader: true)
 }
 
-workflow.onComplete {
-	log.info ( workflow.success ? "\nAssembly is done! Yay!\n" : "Oops .. something went wrong" )
-}
+
