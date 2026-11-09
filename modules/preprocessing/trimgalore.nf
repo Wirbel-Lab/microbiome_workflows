@@ -6,7 +6,7 @@ process trimgalore {
 
     input:
     tuple val(sample_id), path(reads)
-    tuple val(sample_id_2), path(stats)
+    tuple val(sample_id2), path(stats)
 
     output:
     tuple val(sample_id), path("${sample_id}_{R1_val_1,R2_val_2,val_unpaired}.fq.gz"), emit: reads
@@ -34,7 +34,7 @@ process trimgalore {
     readcount_unpaired=\$(echo \$((\$(zcat ${sample_id}_val_unpaired.fq.gz | wc -l) / 4)))
     
     totalcount=\$(echo \$((\$readcount_paired + \$readcount_unpaired)))
-    echo ${sample_id}"\ttrimmed\t"\$totalcount >> "${stats}"
+    echo ${sample_id2}"\ttrimmed\t"\$totalcount >> "${stats}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
