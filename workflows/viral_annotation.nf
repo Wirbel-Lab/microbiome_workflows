@@ -44,5 +44,3 @@ workflow {
     .unique()
     .collectFile(name: params.outdir + '/versions_viral_annotation.yml')
 }
-
-
