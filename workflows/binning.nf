@@ -104,4 +104,3 @@ workflow {
         .unique()
         .collectFile(name: params.outdir + '/versions_binning.yml')
 }
-

@@ -42,4 +42,3 @@ workflow {
 		.unique()
 		.collectFile(name: params.outdir + '/versions_classification.yml', sort: true)
 }
-
