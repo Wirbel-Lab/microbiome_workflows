@@ -29,11 +29,30 @@ containing `mOTUs3`, `MetaPhlAn4`, and `Kraken2`, you could build like that:
 docker build --platform=linux/amd64 -t ghcr.io/jakob-wirbel/micromamba-focal-classification - < Dockerfile_classification
 ```
 
+### Tag the version
+
+To better keep track of changes to the versions of different tools/databases,
+we started tagging the versions of each container. By default, the container
+will get the "latest" tag, but we would like to have each major release
+of the repository reflected in the repo:
+
+```
+docker tag ghcr.io/jakob-wirbel/micromamba-focal-classification:latest \
+            ghcr.io/jakob-wirbel/micromamba-focal-classification:v1.0
+```
+
 ### Publish it
 
 Now you are ready to publish the container. You will have to first push it:
 ```bash
 docker push <container_name>:<tag>
 ```
+For example:
+```
+docker push ghcr.io/jakob-wirbel/micromamba-focal-classification:v1.0
+docker push ghcr.io/jakob-wirbel/micromamba-focal-classification:latest
+```
+
+
 Then you have to go to the `Settings` of the package on 
 [github.com](github.com/) and make it public.
