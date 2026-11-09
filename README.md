@@ -61,6 +61,20 @@ from the run.
 rm -rf .nextflow 
 ```
 
+### Versions
+
+The versions of the tools and datbases used in these workflows are 
+constantly evolving, so here is a list of the current versions as a 
+reference. Not all versions of tools might work with each database version
+This list will be updated whenever the Dockerfiles for the processes are
+updated:
+
+| Tool | Version | Database Version |
+|------|---------|------------------|
+| mOTUs| v4.1.0  | v4.1.0 |
+| metaphlan | v.4.2.6 | vJan26 |
+| sylph | v1.0.0 | GTDB release232 |
+| GTDB-tk | v2.8.0 | release232 |
 
 ## Question?
 
