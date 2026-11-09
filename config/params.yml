@@ -86,11 +86,8 @@ bakta_db_path: "/<path-to-your-databases>/bakta_db/v_6.0/db/"
 #########################################################################
 # Binning parameters
 
-# Do you want to bin with SemiBin2 as well (then DAS Tool)?
-# If true, the contigs are binned with SemiBin2, MetaBAT2, MaxBin2, and CONCOCT
-# If false, the contigs are binned with MetaBAT2, MaxBin2, and CONCOCT
+# The contigs are always binned with SemiBin2, MetaBAT2, MaxBin2, and CONCOCT
 # (then DAS Tool)
-run_semibin2: true
 
 # pre-trained SemiBin2 model (see `SemiBin2 single_easy_bin -h`)
 semibin2_environment: "human_gut"
