@@ -4,7 +4,7 @@ process hostremoval {
 
     input:
     tuple val(sample_id), path(reads)
-    tuple val(sample_id_2), path(stats)
+    tuple val(sample_id2), path(stats)
     path host_genome_location
     val bwa_index_base
 
@@ -33,8 +33,8 @@ process hostremoval {
         readcount_unpaired=\$(echo \$((\$(zcat ${sample_id}_cleaned_orphans.fastq.gz | wc -l) / 4)))
         totalcount=\$(echo \$((\$readcount_paired + \$readcount_unpaired)))
 
-        echo ${sample_id}"\trmhost\t"\$totalcount >> "${stats}"
-        echo ${sample_id}"\torphans\t"\${readcount_unpaired} >> "${stats}"
+        echo ${sample_id2}"\trmhost\t"\$totalcount >> "${stats}"
+        echo ${sample_id2}"\torphans\t"\${readcount_unpaired} >> "${stats}"
     else
         bwa mem -t $task.cpus -o single_mapped.sam ${host_genome_location}/${bwa_index_base} ${reads} 
         samtools fastq --threads ${task.cpus} -t -T BX -f 4 single_mapped.sam > ${sample_id}_cleaned.fastq
@@ -46,8 +46,8 @@ process hostremoval {
         
         readcount_unpaired=\$(echo \$((\$(zcat ${sample_id}_cleaned.fastq.gz | wc -l) / 4)))
         
-        echo ${sample_id}"\trmhost\t"\${readcount_unpaired} >> "${stats}"
-        echo ${sample_id}"\torphans\t"\${readcount_unpaired} >> "${stats}"
+        echo ${sample_id2}"\trmhost\t"\${readcount_unpaired} >> "${stats}"
+        echo ${sample_id2}"\torphans\t"\${readcount_unpaired} >> "${stats}"
     fi
 
     bwa 2> bwa.version || true
@@ -73,7 +73,7 @@ process hostremoval_lr {
     path("${sample_id}.location"), emit: read_loc
     path "versions.yml", emit: versions
 
-    shell:
+    script:
     """
     minimap2 -x map-ont -t ${task.cpus} -y -a ${host_genome_location}/${bwa_index_base} ${reads} > out.sam
     samtools fastq --threads ${task.cpus} -T '*' -n -f4 out.sam > reads_${sample_id}.fastq

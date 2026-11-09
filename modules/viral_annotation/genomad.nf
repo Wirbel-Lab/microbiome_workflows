@@ -15,7 +15,7 @@ process genomad {
 
   shell:
   """
-  mv ${assembly} assembly.fasta
+  [ "${assembly}" != "assembly.fasta"] && mv ${assembly} assembly.fasta || true
   genomad  end-to-end --disable-nn-classification \
     --threads ${task.cpus} assembly.fasta ./genomad_${sample_id} ${genomad_db}
   cp ./genomad_${sample_id}/assembly_summary/assembly_virus.fna ./genomad_${sample_id}/all_phages.fna
