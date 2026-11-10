@@ -14,10 +14,10 @@ channels:
   - conda-forge
 dependencies:
   - pandas=1.5.3
-  - seaborn=0.12.2
+  - seaborn=0.13.2
 EOF
 
 RUN micromamba install -y -n base -f seaborn.yml && \
   micromamba clean --all --yes
 
-ENV PATH "/opt/conda/bin:$PATH"
+ENV PATH="/opt/conda/bin:$PATH"

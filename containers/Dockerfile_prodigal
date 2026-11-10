@@ -15,17 +15,10 @@ channels:
   - conda-forge
 dependencies:
   - prodigal=2.6.3
-  - pplacer=1.1.alpha19
-  - hmmer=3.3.2
-  - numpy=1.24.2
-  - matplotlib-base=3.7.0
-  - pysam=0.20.0
-  - python=3.10.8
 EOF
 
 RUN micromamba install -y -n base -f prodigal.yml && \
   micromamba clean --all --yes
 
-ENV PATH "/opt/conda/bin:$PATH"
+ENV PATH="/opt/conda/bin:$PATH"
 
-RUN pip3 install checkm-genome
