@@ -22,6 +22,7 @@ the [`run.config`](../config/run.config) file as well.
  	- [Human] reference genome
  	- MetaPhlAn4 database
  	- mOTUs3 database
+	- Sylph database
  	- CheckM database
  	- GTDB-tk database
  	- Bakta database
@@ -79,34 +80,31 @@ prepared singularity container:
 
 ```bash
 cd <your-metaphlan-database-location>
-singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-classification:latest
+singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-classification:v1.0
 cd /mnt
-metaphlan --install --bowtie2db ./
+metaphlan --install --db_dir ./
 ```
 
-### mOTUs3 database
+### mOTUs database
 
-The mOTU tool needs a custom database of marker genes. Unfortunately, you 
-cannot download the database through the tool as of now, but maybe it will be
-available as a feature in the future (see 
-[this issue](https://github.com/motu-tool/mOTUs/issues/109)). Instead, we can
-download and configure the database manually:
+You can download the mOTUs database also via the singularity container:
 
 ```bash
 cd <your-motus-database-location>
-wget https://zenodo.org/record/5140350/files/db_mOTU_v3.0.1.tar.gz
-md5sum db_mOTU_v3.0.1.tar.gz
-# expected output: f4fd09fad9b311fb4f21383f6101bfc3
-# if you do not see this output, something went wrong and you need to download
-# the database again!
-tar -zxvf db_mOTU_v3.0.1.tar.gz
+singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-classification:v1.0
+cd /mnt
+motus downloadMGDB -db ./v4.1.0/
 ```
 
-The version file in the Zenodo repository is not really up-to-date with the
-version numbering system of mOTUs, so you will have to adjust it manually:
+### Sylph database
+
+You can find the supported sylph databases [here](https://sylph-docs.github.io/pre%E2%80%90built-databases/).
+You can copy the "Primary Download Link" and then download it to the place
+where you want to store it. For example, downloading the pre-built database
+for GTDB release232 would work like this:
 ```bash
-cd db_mOTU
-sed -i 's/2.6.0/3.0.3/g' db_mOTU_versions
+cd <your-sylph-database-location>
+wget http://faust.compbio.cs.cmu.edu/sylph-stuff/gtdb-r232-c200-dbv2.syl2db
 ```
 
 ### CheckM database
@@ -129,18 +127,18 @@ rm checkm_data_2015_01_16.tar.gz
 
 The documentation for GTDB-tk can be found 
 [here]().
-The current version of this workflow uses the version `v2.6.1`, so you will
+The current version of this workflow uses the version `v2.8.0`, so you will
 need the following database:
 
 ```bash
 cd <your-gtdbtk-database-location>
-wget https://data.gtdb.ecogenomic.org/releases/release226/226.0/auxillary_files/gtdbtk_package/full_package/gtdbtk_r226_data.tar.gz
-md5sum gtdbtk_r226_data.tar.gz
+wget https://data.gtdb.ecogenomic.org/releases/release226/226.0/auxillary_files/gtdbtk_package/full_package/gtdbtk_r232_data.tar.gz
+md5sum gtdbtk_r232_data.tar.gz
 # expected output: 24b476ea5a4ef30519d461e56cc4a27f
 # if you do not see this output, something went wrong and you need to download
 # the database again!
-tar -xvzf gtdbtk_r226_data.tar.gz
-rm gtdbtk_r226_data.tar.gz
+tar -xvzf gtdbtk_r232_data.tar.gz
+rm gtdbtk_r232_data.tar.gz
 ```
 
 ### Bakta database
