@@ -15,10 +15,11 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - genomad=1.7.6
+  - genomad=1.13.0
+  - checkv=1.1.1
 EOF
 
 RUN micromamba install -y -n base -f virus.yml && \
   micromamba clean --all --yes
 
-ENV PATH "/opt/conda/bin:$PATH"
+ENV PATH="/opt/conda/bin:$PATH"
