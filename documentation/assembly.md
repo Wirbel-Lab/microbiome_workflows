@@ -14,10 +14,7 @@ Our pipeline does the following tasks:
 
 ###  Long reads
 
-For long reads, assembly will be performed with Meta-Flye and myloasm. If you
-want to run only one of them (for example to re-run myloasm without running
-Meta-Flye again), set `run_flye` or `run_myloasm` to `false` in the
-`params.yml` file.
+For long reads, assembly will be performed with Meta-Flye and myloasm.
 
 ## Setup
 
@@ -101,7 +98,7 @@ nextflow run </path/to/this/repo>/workflows/assembly.nf \
 This script will create the following outputs:
 
 - `assembly`: Main output folder, containing
-	- `megahit/flye`: Folder containing the megahit/flye assemblies
+	- `megahit/flye/myloasm`: Folder containing the megahit/flye/myloasm assemblies
 	- `bakta`: Folder containing the output from bakta
 	- `quast_report.tsv`: File tabulating the assembly quality for each sample
 - `versions_assembly.yml`: The versions for each of the tools using in the
