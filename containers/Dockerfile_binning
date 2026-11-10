@@ -14,16 +14,18 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - metabat2=2.15
+  - metabat2=2.17
   - bwa=0.7.17
   - samtools=1.16.1
   - maxbin2=2.2.7
-  - das_tool=1.1.6
+  - das_tool=1.1.7
   - scikit-learn=1.1.0
   - concoct=1.1.0
+  - semibin=2.2.0
+  - checkm-genome=1.2.5
 EOF
 
 RUN micromamba install -y -n base -f binning.yml && \
   micromamba clean --all --yes
 
-ENV PATH "/opt/conda/bin:$PATH"
+ENV PATH="/opt/conda/bin:$PATH"
