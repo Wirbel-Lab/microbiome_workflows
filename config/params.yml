@@ -43,8 +43,8 @@ outdir: "<absolute-path-to-the-output-directory>"
 
 # location of the host genome
 # Important! It needs to be indexed already
-host_genome_location: "<path-to-the-host-genome>/hg38/"
-bwa_index_base: "hg38.fa"
+host_genome_location: "<path-to-the-host-genome>/T2T/"
+bwa_index_base: "T2T.fa"
 
 # trim galore
 trimgalore_quality:  30
@@ -59,9 +59,6 @@ min_lr_qual: 10
 #########################################################################
 # Classification parameters
 
-run_motus: true
-run_metaphlan: true
-
 # parameters for mOTUs2
 motus_map_mgs_cutoff: 2
 motus_min_len_align_length: 75
@@ -71,23 +68,17 @@ motus_gtdb_path: "/<path-to-your-databases>/motus_db/3.0.3/mOTUs_3.0.0_GTDB_tax.
 # parameters for metaphlan
 metaphlan_db_path: "/<path-to-your-databases>/metaphlan_db/vJan21/"
 
+# parameters for sylph
+sylph_db_path: "/<path-to-your-databases>/sylph_db/gtbd-r323/"
+
 #########################################################################
 # Assembly parameters
-
-# Which assemblers do you want to run on long reads?
-run_flye: true
-run_myloasm: true
-
-flye_overlap: "auto"
 
 # bakta database
 bakta_db_path: "/<path-to-your-databases>/bakta_db/v_6.0/db/"
 
 #########################################################################
 # Binning parameters
-
-# The contigs are always binned with SemiBin2, MetaBAT2, MaxBin2, and CONCOCT
-# (then DAS Tool)
 
 # pre-trained SemiBin2 model (see `SemiBin2 single_easy_bin -h`)
 semibin2_environment: "human_gut"
@@ -96,7 +87,7 @@ semibin2_environment: "human_gut"
 checkm_db_path: "/<path-to-your-databases>/checkm_db/2015_01_16/"
 
 # path to the GTDB database
-gtdb_db_path: "/<path-to-your-databases>/GTDBTK/release226/"
+gtdb_db_path: "/<path-to-your-databases>/GTDBTK/release323/"
 
 #########################################################################
 # Viral classification databases
