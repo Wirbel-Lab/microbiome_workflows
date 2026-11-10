@@ -14,11 +14,12 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - nanoplot=1.41.6
+  - nanoplot=1.48.0
   - minimap2=2.31
   - samtools=1.24
   - flye=2.9.6
   - myloasm=0.6.0
+  - fastplong=0.7.1
 EOF
 
 RUN micromamba install -y -n base -f long_read.yml && \
