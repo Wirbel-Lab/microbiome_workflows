@@ -34,6 +34,7 @@ Then, you can run the workflow like this:
 nextflow run </path/to/this/repo>/workflows/binning.nf \
 	-c </path/to/this/repo>/config/run.config \
 	-params-file params.yml \
+	-profile slurm \
 	-with-trace -with-report
 ```
 
@@ -85,6 +86,7 @@ supply them when calling the nextflow process like this:
 nextflow run </path/to/this/repo>/workflows/binning.nf \
 	-c </path/to/this/repo>/config/run.config \
 	-params-file params.yml \
+	-profile slurm \
 	-with-trace -with-report --preprocessed_reads ./preprocessed_reads.csv \
 	--assemblies ./assemblies.csv
 ```
@@ -95,10 +97,7 @@ This script will create the following outputs:
 
 - `binning`: Main output folder, containing
 	- `checkm`: Folder containing the CheckM output files
-	- `concoct`: Folder containing the CONCOCT bins
 	- `dastool`: Folder containing the DAStool bins
-	- `maxbin`: Folder containing the maxbin bins
-	- `metabat`: Folder containing the metabat bins
 	- `gtdb`: Folder containing the GTDB-tk output files
 - `versions_binning.yml`: The versions for each of the tools using in the
 binning pipeline
