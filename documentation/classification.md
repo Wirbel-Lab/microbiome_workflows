@@ -1,7 +1,7 @@
 # Classificaiton
 
 The classificaiton pipeline will perform taxonomic classification
-with MetaPhlAn and/or mOTUs.
+with MetaPhlAn, mOTUs, and Sylph
 
 ### Short reads
 
@@ -9,6 +9,7 @@ Our pipeline does the following tasks:
 
 - Classification with MetaPhlAn4
 - Classification with mOTUs3
+- Classification with sylph
 
 ###  Long reads
 
@@ -24,6 +25,7 @@ classification workflow is:
 
 - metaphlan database
 - motus database
+- sylph database
 
 
 Then, you can run the workflow like this:
@@ -31,6 +33,7 @@ Then, you can run the workflow like this:
 nextflow run </path/to/this/repo>/workflows/classification.nf \
 	-c </path/to/this/repo>/config/run.config \
 	-params-file params.yml \
+	-profile slurm \
 	-with-trace -with-report
 ```
 
@@ -92,7 +95,6 @@ This script will create the following outputs:
 	- `motus_all_gtdb.tsv`: Combine output from motus, using the GTDB taxonomy
 	- `metaphlan_all.tsv`: Combine output from metaphlan
 	- `metaphlan_all_gtdb.tsv`: Combine output from metaphlan, using the GTDB taxonomy
-	- `motus`: Folder containing the output from motus
-	- `metaphlan`: Folder containing the output from metaphlan
+	- `sylph_all.tsv`: Combine output from sylph
 - `versions_classification.yml`: The versions for each of the tools using in the
 classification pipeline
