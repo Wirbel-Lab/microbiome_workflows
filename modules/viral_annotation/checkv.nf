@@ -1,5 +1,5 @@
 process checkv {
-  publishDir params.outdir + "/viruses/checkv/", mode: params.publish_mode, pattern: "checkv_${sample_id}_${type}/*"
+  publishDir params.outdir + "/viruses/checkv/", mode: params.publish_mode, pattern: "checkv_*/*"
   tag "CheckV on $sample_id"
 
   input:
@@ -12,7 +12,7 @@ process checkv {
   path("checkv_${sample_id}_${type}/contamination.tsv"), emit: checkv_contamination
   path "versions.yml", emit: versions
 
-  shell:
+  script:
   """
   checkv end_to_end ${phages} \
      checkv_${sample_id}_${type} --remove_tmp -t ${task.cpus} -d ${path_checkv_db}

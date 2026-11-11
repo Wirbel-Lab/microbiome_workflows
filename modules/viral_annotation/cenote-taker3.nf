@@ -1,6 +1,6 @@
 process cenote_taker3 {
   tag "cenote-taker3 on $sample_id"
-  publishDir params.outdir + "/viruses/ct3/", mode: params.publish_mode, pattern: "ct3_${sample_id}/*"
+  publishDir params.outdir + "/viruses/ct3/", mode: params.publish_mode, pattern: "ct3_*/*"
 
   input:
   tuple val(sample_id), path(assembly)
@@ -13,9 +13,9 @@ process cenote_taker3 {
   tuple val(sample_id), path("ct3_${sample_id}/contig_map.tsv"), emit: ct3_contig_map
   path "versions.yml", emit: versions
 
-  shell:
+  script:
   """
-  [ "${assembly}" != "assembly.fasta"] && mv ${assembly} assembly.fasta || true
+  [ "${assembly}" != "assembly.fasta" ] && mv ${assembly} assembly.fasta || true
   cenotetaker3 -c assembly.fasta -r assembly -p T \
     --lin_minimum_hallmark_genes 2 -t ${task.cpus} --cenote-dbs ${ct3_db} 
   

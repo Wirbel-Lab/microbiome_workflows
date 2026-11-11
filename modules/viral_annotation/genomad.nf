@@ -1,6 +1,6 @@
 process genomad {
   tag "geNomad on $sample_id"
-  publishDir params.outdir + "/viruses/genomad/", mode: params.publish_mode, pattern: "genomad_${sample_id}/*"
+  publishDir params.outdir + "/viruses/genomad/", mode: params.publish_mode, pattern: "genomad_*/*"
 
   input:
   tuple val(sample_id), path(assembly)
@@ -13,9 +13,9 @@ process genomad {
   tuple val(sample_id), path("genomad_${sample_id}/all_plasmids.fna"), emit: genomad_plasmids
   path "versions.yml", emit: versions
 
-  shell:
+  script:
   """
-  [ "${assembly}" != "assembly.fasta"] && mv ${assembly} assembly.fasta || true
+  [ "${assembly}" != "assembly.fasta" ] && mv ${assembly} assembly.fasta || true
   genomad  end-to-end --disable-nn-classification \
     --threads ${task.cpus} assembly.fasta ./genomad_${sample_id} ${genomad_db}
   cp ./genomad_${sample_id}/assembly_summary/assembly_virus.fna ./genomad_${sample_id}/all_phages.fna

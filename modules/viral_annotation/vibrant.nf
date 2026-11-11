@@ -1,6 +1,6 @@
 process vibrant {
   tag "Vibrant on $sample_id"
-  publishDir params.outdir + "/viruses/vibrant/", mode: params.publish_mode, pattern: "vibrant_${sample_id}/*"
+  publishDir params.outdir + "/viruses/vibrant/", mode: params.publish_mode, pattern: "vibrant_*/*"
 
   input:
   tuple val(sample_id), path(assembly)
@@ -11,7 +11,7 @@ process vibrant {
   tuple val(sample_id), path("vibrant_${sample_id}/all_phages.fna"), emit: vibrant_phages
   path "versions.yml", emit: versions
 
-  shell:
+  script:
   """
   cp ${assembly} assembly_fixed.fasta
   sed -i 's/ /_/g' assembly_fixed.fasta
