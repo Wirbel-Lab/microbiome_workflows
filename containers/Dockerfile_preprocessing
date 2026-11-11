@@ -11,8 +11,8 @@ USER $MAMBA_USER
 RUN <<EOF cat > preprocessing.yml
 name: preprocessing
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
 dependencies:
   - ncurses
   - python=3.10
@@ -20,8 +20,10 @@ dependencies:
   - multiqc=1.35
   - htstream=1.4.1
   - bwa=0.7.19
-  - samtools=1.25
+  - samtools=1.23
   - trim-galore=2.4.0
+  - pigz=2.8
+  - boost-cpp=1.85.0
 EOF
 
 RUN micromamba install -y -n base -f preprocessing.yml && \
