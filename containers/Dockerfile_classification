@@ -18,6 +18,7 @@ dependencies:
   - motus=4.1.0
   - metaphlan=4.2.6
   - sylph=1.0.0
+  - sylph-tax=1.9.2
 EOF
 
 RUN micromamba install -y -n base -f classification.yml && \
