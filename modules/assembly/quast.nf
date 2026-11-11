@@ -8,7 +8,7 @@ process quast {
   path("${sample_id}_report.tsv"), emit: quast_res
   path "versions.yml", emit: versions
 
-  shell:
+  script:
   """
   quast.py -o quast ${contigs} --fast
   mv ./quast/report.tsv ./${sample_id}_report.tsv
@@ -29,7 +29,7 @@ process combine_quast {
 	output:
 	path("quast_report.tsv")
 	
-	shell:
+	script:
 	"""
 	mkdir -p quast_all
 	mv *report.tsv ./quast_all

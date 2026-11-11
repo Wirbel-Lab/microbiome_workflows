@@ -9,7 +9,7 @@ process megahit {
 	path "versions.yml", emit: versions
 	path "location.csv", emit: location
 
-	shell:
+	script:
 	"""
 	if ${params.single_end}
 	then

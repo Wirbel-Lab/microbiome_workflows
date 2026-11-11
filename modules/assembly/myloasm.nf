@@ -12,7 +12,7 @@ process myloasm {
 	path "versions.yml", emit: versions
 	path "location_${sample_id}.csv", emit: location
 
-	shell:
+	script:
 	"""
 	myloasm ${reads} \
 		-o myloasm_${sample_id} \

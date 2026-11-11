@@ -12,7 +12,7 @@ process flye {
 	path "versions.yml", emit: versions
 	path "location_${sample_id}.csv", emit: location
 
-	shell:
+	script:
 	"""
 	flye --nano-hq ${reads} --out-dir flye_${sample_id} --meta \
 		--threads ${task.cpus} --genome-size 200m
