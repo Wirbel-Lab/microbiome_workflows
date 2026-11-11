@@ -11,7 +11,7 @@ workflow input_check_assembly {
     main:
     if(hasExtension(params.assemblies, "csv")){
         // extracts read files from samplesheet CSV and distribute into channels
-        ch_input = Channel
+        ch_input = channel
             .from(file(params.assemblies))
             .splitCsv(header: true)
             .map { row ->

@@ -11,7 +11,7 @@ workflow input_check {
     main:
     if(hasExtension(params.preprocessed_reads, "csv")){
         // extracts read files from samplesheet CSV and distribute into channels
-        ch_input = Channel
+        ch_input = channel
             .from(file(params.preprocessed_reads))
             .splitCsv(header: true)
             .map { row ->
@@ -44,7 +44,7 @@ workflow input_check_lr {
     main:
     if(hasExtension(params.preprocessed_reads, "csv")){
         // extracts read files from samplesheet CSV and distribute into channels
-        ch_input = Channel
+        ch_input = channel
             .from(file(params.preprocessed_reads))
             .splitCsv(header: true)
             .map { row ->
@@ -71,7 +71,7 @@ workflow input_check_single_end {
     main:
     if(hasExtension(params.preprocessed_reads, "csv")){
         // extracts read files from samplesheet CSV and distribute into channels
-        ch_input = Channel
+        ch_input = channel
             .from(file(params.preprocessed_reads))
             .splitCsv(header: true)
             .map { row ->
