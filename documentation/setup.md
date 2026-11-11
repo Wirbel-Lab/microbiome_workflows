@@ -68,7 +68,7 @@ singularity container that we use for the workflow (because you might not have
 command when running the singularity container:
 ```bash
 cd <your-reference-genome-location>
-singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-preprocessing:latest
+singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-preprocessing:v1.0
 cd /mnt
 bwa index hg38.fa
 ```
@@ -166,7 +166,7 @@ the workflow will fail. You can use the singularity container for that:
 ```bash
 cd <your-bakta-database-location>
 cd db
-singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-bakta:latest
+singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-bakta:v1.0
 cd /mnt
 amrfinder_update --force_update --database ./amrfinderplus-db/
 ```
@@ -178,7 +178,7 @@ prepared singularity container:
 
 ```bash
 cd <your-vibrant-database-location>
-singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-virus:latest
+singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-vibrant:v1.0
 cd /mnt
 download-db.sh .
 ```
@@ -190,7 +190,7 @@ prepared singularity container:
 
 ```bash
 cd <your-genomad-database-location>
-singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-genomad:latest
+singularity shell --bind ./:/mnt docker://ghcr.io/jakob-wirbel/micromamba-focal-genomad:v1.0
 cd /mnt
 genomad download-database .
 ```
