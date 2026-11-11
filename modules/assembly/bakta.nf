@@ -15,9 +15,10 @@ process bakta {
   path "bakta_${sample_id}/assembly.hypotheticals.faa", emit: bakta_results_hyp_faa
   path "versions.yml", emit: versions
 
-  shell:
+  script:
   """
   mkdir ./tmp
+  [ "${assembly}" != "assembly.fasta" ] && mv ${assembly} assembly.fasta || true
   bakta -t ${task.cpus} -o bakta_${sample_id} \
 		--db ${database}  --skip-trna \
     --skip-tmrna --skip-ncrna --skip-ncrna-region --skip-crispr \
@@ -26,7 +27,7 @@ process bakta {
 
   cat <<-END_VERSIONS > versions.yml
   "${task.process}":
-  	bakta: \$( bakta --version | sed -e "s/bakta //g" )
+      bakta: \$( bakta --version | sed -e "s/bakta //g" )
   END_VERSIONS
   """
 }
