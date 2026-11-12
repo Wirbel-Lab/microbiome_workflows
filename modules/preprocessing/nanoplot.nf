@@ -10,7 +10,7 @@ process nanoplot {
 	path "nanoplot_${sample_id}_${type}", emit: nanoplot
 	path "versions.yml", emit: versions
 
-	shell:
+	script:
 	"""
 	NanoPlot -t ${task.cpus} \
 	    -o nanoplot_${sample_id}_${type} --tsv_stats --fastq ${reads} --plots dot
@@ -35,7 +35,7 @@ process fastp {
 	tuple val(sample_id), path("${sample_id}.qc.fq.gz"), emit: qc_reads
 	path "versions.yml", emit: versions
 
-	shell:
+	script:
 	"""
 	fastplong -i ${reads} -o ${sample_id}.qc.fq.gz \
 		--length_required ${params.min_lr_len} \
