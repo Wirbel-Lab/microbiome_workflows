@@ -10,11 +10,10 @@ process gtdbtk {
         tuple val(sample_id), path("gtdb_${sample_id}.tsv"), emit: gtdb_out
         path "versions.yml", emit: versions
 
-        shell:
+        script:
         """
         export GTDBTK_DATA_PATH=${path_gtdb_tk}
         gtdbtk classify_wf --cpus ${task.cpus} --pplacer_cpus ${task.cpus} \
-                --skip_ani_screen \
                 --batchfile ${dastool_bins} -x fa --out_dir gtdb_${sample_id}       
 	
 	if [[ ! -f gtdb_${sample_id}/gtdbtk.bac120.summary.tsv ]]
