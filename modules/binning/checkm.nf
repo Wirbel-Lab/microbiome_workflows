@@ -10,7 +10,7 @@ process checkm {
 	tuple val(sample_id), path("checkm_${sample_id}.tsv"), emit: checkm_out
 	path "versions.yml", emit: versions
 
-	shell:
+	script:
 	"""
 	export CHECKM_DATA_PATH=${path_checkm_db}
 	checkm lineage_wf -t $task.cpus -x fa \
