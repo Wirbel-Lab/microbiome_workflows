@@ -13,7 +13,7 @@ process fastqc {
     script:
     """
     mkdir ${type}fastqc_${sample_id}_logs
-    fastqc -o ${type}fastqc_${sample_id}_logs -f fastq -q ${reads} -t ${task.cpus}
+    fastqc --outdir ${type}fastqc_${sample_id}_logs -f fastq -q ${reads} -t ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
