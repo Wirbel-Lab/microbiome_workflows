@@ -12,15 +12,15 @@ process aggregatereports {
   path('count_plot.pdf')
   path('preprocessed_reads.csv')
 
-  shell:
-  '''
+  script:
+  """
   set +ue
   
-  get_counts.py read_counts_new.tsv !{stats}
+  get_counts.py read_counts_new.tsv ${stats}
   # combine with what is already there
-  if [ -s !{preproc_summary} ];
+  if [ -s ${preproc_summary} ];
   then
-    cat !{preproc_summary} read_counts_new.tsv > combination.tsv
+    cat ${preproc_summary} read_counts_new.tsv > combination.tsv
   else
     cp read_counts_new.tsv combination.tsv
   fi
@@ -29,24 +29,24 @@ process aggregatereports {
   plot_counts.py read_counts.tsv
 
   # same for the read location stuff
-  column_count=\$(head -n 1 "!{read_location[0]}" | awk -F',' '{print NF}')
-  if [ "$column_count" -eq 2 ]
+  column_count=\$(head -n 1 "${read_location[0]}" | awk -F',' '{print NF}')
+  if [ "\$column_count" -eq 2 ]
   then
     echo "sampleID,reads" > preprocessed_reads_new.csv
   else
     echo "sampleID,forward,reverse,orphans" > preprocessed_reads_new.csv
   fi
   
-  cat !{read_location} >> preprocessed_reads_new.csv
-  if [ -s !{read_summary} ];
+  cat ${read_location} >> preprocessed_reads_new.csv
+  if [ -s ${read_summary} ];
   then
-    cat !{read_summary} preprocessed_reads_new.csv > combination.csv
+    cat ${read_summary} preprocessed_reads_new.csv > combination.csv
   else
     cp preprocessed_reads_new.csv combination.csv
   fi
   awk '!a[\$0]++' combination.csv > combination_uniq.csv
   mv combination_uniq.csv preprocessed_reads.csv
-  '''
+  """
 }
 
 process aggregatereports_lr {
@@ -62,40 +62,40 @@ process aggregatereports_lr {
   path ("sequencing_stats.csv")
   path("preprocessed_reads.csv")
 
-  shell:
-  '''
+  script:
+  """
   set +u
   # prepare the full report on all the samples in this run
   echo "SampleID,number_of_reads,number_of_bases,median_read_length,mean_read_length,read_length_stdev,n50,mean_qual,median_qual" > sequencing_stats_tmp.csv
 
   for filename in nanoplot_*
   do
-    prefix=$(echo "$filename" | sed 's/nanoplot_//')
-    echo $prefix
-    head -n 9 "$filename"/NanoStats.txt | awk -F'\\t' -v prefix="$prefix" 'NR == 1 { printf "%s", prefix; } NR > 1 { printf ",%s", $2; } END { printf "\\n"; }' >> sequencing_stats_tmp.csv
+    prefix=\$(echo "\$filename" | sed 's/nanoplot_//')
+    echo "\${prefix}"
+    head -n 9 "\$filename"/NanoStats.txt | awk -F'\\t' -v prefix="\$prefix" 'NR == 1 { printf "%s", prefix; } NR > 1 { printf ",%s", \$2; } END { printf "\\n"; }' >> sequencing_stats_tmp.csv
   done
 
   # combine with what is already there
-  if [ -s !{full_report} ];
+  if [ -s ${full_report} ];
   then
-    cat !{full_report} sequencing_stats_tmp.csv > combination.csv
+    cat ${full_report} sequencing_stats_tmp.csv > combination.csv
   else
     cp sequencing_stats_tmp.csv combination.csv
   fi
   
   # take each uniq row
-  awk '!a[$0]++' combination.csv 
+  awk '!a[\$0]++' combination.csv 
   mv combination.csv sequencing_stats.csv
 
   echo "sampleID,reads" > preprocessed_reads_new.csv
-  cat !{read_location} >> preprocessed_reads_new.csv
-  if [ -s !{read_summary} ];
+  cat ${read_location} >> preprocessed_reads_new.csv
+  if [ -s ${read_summary} ];
   then
-    cat !{read_summary} preprocessed_reads_new.csv > combination.csv
+    cat ${read_summary} preprocessed_reads_new.csv > combination.csv
   else
     cp preprocessed_reads_new.csv combination.csv
   fi
   awk '!a[\$0]++' combination.csv > combination_uniq.csv
   mv combination_uniq.csv preprocessed_reads.csv
-  '''
+  """
 }
