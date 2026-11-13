@@ -11,6 +11,7 @@ params.semibin2_environment="human_gut"
  * Runs metabat2, maxbin, and Concoct on the contigs, then DAS tool
  * Check quality by CheckM or sth (maybe others)?
 */
+include { workflowVersionToYAML } from '../modules/utils'
 
 include { input_check } from '../modules/input/input_check'
 include { input_check_single_end } from '../modules/input/input_check'
@@ -37,19 +38,29 @@ include { binning_prep_lr_bam } from '../modules/binning/binning_prep'
 */
 
 include { semibin2 } from '../modules/binning/semibin2'
-include { dastool_semibin2 } from '../modules/binning/dastool'
+include { dastool } from '../modules/binning/dastool'
 
 workflow {
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
     ch_input_assembly = input_check_assembly()
     
     if ( params.long_reads) {
         ch_processed_reads = input_check_lr()
-
+        
+        // need to adjust the mixing of channels because the new
+        // version has myloasm and flye tags in the name of the assemblies
+        ch_assembly_id = ch_input_assembly
+            .map { type, assembly ->
+            def sample_id = type.replaceFirst(/_(flye|myloasm)$/, '')
+            tuple(sample_id, type, assembly)
+        }
+        
         ch_input = ch_processed_reads
-            .concat(ch_input_assembly)
-            .groupTuple()
-
+            .combine(ch_assembly_id, by: 0)
+            .map { _sample_id, reads, assembly_id, assembly ->
+                tuple(assembly_id, [reads, assembly])
+        }
+        
         // PREPARE BINNING for long reads
         ch_bams = binning_prep_lr_bam(ch_input)
         ch_versions = ch_versions.mix(ch_bams.versions.first())
@@ -93,15 +104,17 @@ workflow {
     ch_versions = ch_versions.mix(ch_concoct.versions.first())
 
     // combine bins for each method for dastool
-    ch_final =  ch_binning_prep.bin_prep
-        .concat(ch_semibin2.bins)
-        .concat(ch_metabat.bins)
-        .concat(ch_maxbin.bins)
-        .concat(ch_concoct.bins)
-        .groupTuple(size: 5)
+    ch_final = ch_binning_prep.bin_prep
+        .join(ch_semibin2.bins, by: 0)
+        .join(ch_metabat.bins, by: 0)
+        .join(ch_maxbin.bins, by: 0)
+        .join(ch_concoct.bins, by: 0)
+        .map { sample_id, contigs, depth, bam, semibin, metabat, maxbin, concoct ->
+            tuple(sample_id, [contigs, semibin, metabat, maxbin, concoct], depth, bam)
+        }
 
     // run DAStool (on all binners)
-    ch_dastool = dastool_semibin2(ch_final)
+    ch_dastool = dastool(ch_final)
     ch_versions = ch_versions.mix(ch_dastool.versions.first())
 
     // run checkM on DAStool bins
@@ -115,5 +128,7 @@ workflow {
     // VERSION output
     ch_versions
         .unique()
-        .collectFile(name: params.outdir + '/versions_binning.yml')
+        .mix( channel.of(workflowVersionToYAML()) )
+        .collectFile(name: params.outdir + '/versions_binning.yml',
+            newLine: true)
 }
