@@ -10,7 +10,7 @@ params.single_end=false
  * Processes for fastqc, multiqc, and read processing, including
  * deduplication, trimming, human read removal
 */
-
+include { workflowVersionToYAML } from '../modules/utils'
 include { input_raw } from '../modules/input/input_raw'
 include { combine_fastqs } from '../modules/input/combine_fastqs'
 include { input_raw_single_end } from '../modules/input/input_raw'
@@ -39,7 +39,7 @@ include { aggregatereports_lr } from '../modules/preprocessing/aggregate'
 
 workflow {
 
-	ch_versions = Channel.empty()
+	ch_versions = channel.empty()
 
 	if ( params.long_reads) {
 		ch_raw_reads = input_raw_lr()
@@ -56,39 +56,40 @@ workflow {
 		ch_versions = ch_versions.mix(ch_fastp.versions.first())
 
 		// NanoPlot after filtering
-  	ch_nanoplot_filter = nanoplot_filter(ch_fastp.qc_reads, 'filter')
+  		ch_nanoplot_filter = nanoplot_filter(ch_fastp.qc_reads, 'filter')
 
 		// host removal
 		ch_host_removed = hostremoval_lr(ch_fastp.qc_reads, 
 				params.host_genome_location, 
 				params.bwa_index_base)
-  	ch_versions = ch_versions.mix(ch_host_removed.versions.first())
+  		ch_versions = ch_versions.mix(ch_host_removed.versions.first())
 
-  	// NanoPlot after host removal
-  	ch_nanoplot_final = nanoplot_final(ch_host_removed.reads, 'post')
+  		// NanoPlot after host removal
+  		ch_nanoplot_final = nanoplot_final(ch_host_removed.reads, 'post')
 		
 		// Aggregate results
 		ch_stats = ch_nanoplot.nanoplot.collect()
 			.concat(ch_nanoplot_filter.nanoplot.collect())
-    	.concat(ch_nanoplot_final.nanoplot.collect()).collect()
-  	ch_seq_stats = aggregatereports_lr(ch_stats, 
-  		ch_host_removed.read_loc.collect(),
-  		params.outdir + "/stats/preprocessed_reads.csv",
-  		params.outdir + "/stats/sequencing_stats.tsv")
+    		.concat(ch_nanoplot_final.nanoplot.collect()).collect()
+  		
+		aggregatereports_lr(ch_stats, 
+  			ch_host_removed.read_loc.collect(),
+  			params.outdir + "/stats/preprocessed_reads.csv",
+  			params.outdir + "/stats/sequencing_stats.tsv")
 	}
 	else {
 		if ( params.single_end ) {
 			ch_read_pairs = input_raw_single_end()
 			// Combine fastqs that were sequenced across multiple lanes
-      ch_reads_combined = combine_fastqs_single( ch_read_pairs
-      	.groupTuple()
-      	.map{ sample, reads -> [sample, reads.flatten()] } )
+      		ch_reads_combined = combine_fastqs_single( ch_read_pairs
+      			.groupTuple()
+      			.map{ sample, reads -> [sample, reads.flatten()] } )
 		} else {
 			ch_read_pairs = input_raw()
 			// Combine fastqs that were sequenced across multiple lanes
-      ch_reads_combined = combine_fastqs( ch_read_pairs
-      	.groupTuple()
-      	.map{ sample, reads -> [sample, reads.flatten()] } )
+      		ch_reads_combined = combine_fastqs( ch_read_pairs
+      			.groupTuple()
+      			.map{ sample, reads -> [sample, reads.flatten()] } )
 		}
 
 		// PREPROCESSING
@@ -97,7 +98,8 @@ workflow {
 		ch_versions = ch_versions.mix(ch_fastqc.versions.first())
 
 		// MULTIQC
-		ch_multiqc_pre = multiqc_pre(ch_fastqc.fastqc.collect(), "pre", params.outdir + "/stats/fastqc")
+		ch_multiqc_pre = multiqc_pre(ch_fastqc.fastqc.collect(), "pre", 
+			params.outdir + "/stats/fastqc")
 		ch_versions = ch_versions.mix(ch_multiqc_pre.versions.first())
 
 		// DEDUPLICATION
@@ -119,7 +121,8 @@ workflow {
 		ch_postfastqc = fastqc_post(ch_host_remove.reads, "post")
 
 		// MULTIQC again
-		multiqc_post(ch_postfastqc.fastqc.collect(), "post", params.outdir + "/stats/fastqc")
+		multiqc_post(ch_postfastqc.fastqc.collect(), "post", 
+			params.outdir + "/stats/fastqc")
 
 		// AGGREGATE REPORTS
 		aggregatereports(ch_host_remove.stats.collect(), 
@@ -131,6 +134,8 @@ workflow {
 	// VERSION output
 	ch_versions
 		.unique()
-		.collectFile(name: params.outdir + '/versions_preprocessing.yml')
+		.mix( channel.of(workflowVersionToYAML()) )
+		.collectFile(name: params.outdir + '/versions_preprocessing.yml',
+			newLine: true)
 
 }
