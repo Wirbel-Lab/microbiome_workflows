@@ -44,7 +44,7 @@ outdir: "<absolute-path-to-the-output-directory>"
 # location of the host genome
 # Important! It needs to be indexed already
 host_genome_location: "<path-to-the-host-genome>/T2T/"
-bwa_index_base: "T2T.fa"
+bwa_index_base: "GCF_009914755.1_T2T-CHM13v2.0_genomic.fna"
 
 # trim galore
 trimgalore_quality:  30
@@ -69,13 +69,14 @@ motus_gtdb_path: "/<path-to-your-databases>/motus_db/3.0.3/mOTUs_3.0.0_GTDB_tax.
 metaphlan_db_path: "/<path-to-your-databases>/metaphlan_db/vJan21/"
 
 # parameters for sylph
-sylph_db_path: "/<path-to-your-databases>/sylph_db/gtbd-r323/"
+sylph_db_path: "/<path-to-your-databases>/sylph_db/gtbd-r323/gtdb-r232-c200-dbv2.syl2db"
+sylph_tax_path: "/<path-to-your-databases>/sylph_db/taxonomies/gtdb_r232_metadata.tsv.gz"
 
 #########################################################################
 # Assembly parameters
 
 # bakta database
-bakta_db_path: "/<path-to-your-databases>/bakta_db/v_6.0/db/"
+bakta_db_path: "/<path-to-your-databases>/bakta_db/v_6.0/"
 
 #########################################################################
 # Binning parameters
@@ -93,13 +94,13 @@ gtdb_db_path: "/<path-to-your-databases>/GTDBTK/release323/"
 # Viral classification databases
 
 # geNomad database
-genomad_db_path: "/<path-to-your-databases>/genomad/v1.6/genomad_db/"
+genomad_db_path: "/<path-to-your-databases>/genomad_db/v1.7/"
 
 # VIBRANT database
 vibrant_db_path: "/<path-to-your-databases>/vibrant_db/v1.2.1"
 
 # Cenote-taker3 database
-ct3_db_path: "/<path-to-your-databases>/ct3_db"
+ct3_db_path: "/<path-to-your-databases>/cenote-taker3_db/v3.1.1/"
 
 # CheckV database
-checkv_db_path: "/<path-to-your-databases>/checkv_db/checkv-db-v1.5"
+checkv_db_path: "/<path-to-your-databases>/checkv_db/v1.5"
