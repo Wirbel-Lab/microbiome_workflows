@@ -1,7 +1,7 @@
 /* VIRAL ANNOTATION
  * Runs VIBRANT, geNomad, and cenote-taker3 on contigs, runs CheckV on the viruses.
 */
-
+include { workflowVersionToYAML } from '../modules/utils'
 include { input_check_assembly } from '../modules/input/input_assembly'
 
 include { vibrant } from '../modules/viral_annotation/vibrant'
@@ -14,7 +14,7 @@ include { checkv as checkv_ct3 } from '../modules/viral_annotation/checkv'
 
 workflow {
   ch_input = input_check_assembly()
-  ch_versions = Channel.empty()
+  ch_versions = channel.empty()
   
   // VIBRANT
   ch_vibrant = vibrant(ch_input, params.vibrant_db_path)
@@ -42,5 +42,7 @@ workflow {
   // VERSION output
   ch_versions
     .unique()
-    .collectFile(name: params.outdir + '/versions_viral_annotation.yml')
+    .mix( channel.of(workflowVersionToYAML()) )
+    .collectFile(name: params.outdir + '/versions_viral_annotation.yml',
+      newLine: true)
 }
