@@ -1,7 +1,4 @@
-params.metaphlan_db_path = "/labs/asbhatt/wirbel/utils/metaphlan_db"
-
 process metaphlan {
-	publishDir params.outdir + "/classification/metaphlan", mode: params.publish_mode, pattern: "metaphlan_*"
 	tag "MetaPhlAn for $sample_id"
 
 	input:
@@ -20,16 +17,16 @@ process metaphlan {
 	then
 		metaphlan ${reads[0]},${reads[1]},${reads[2]} \
 			--input_type fastq --nproc $task.cpus \
-			--bowtie2out ${sample_id}.bowtie2.bz2 \
-			--bowtie2db ${metaphlan_db_path} --tmp_dir tmp/ \
-			--unclassified_estimation --offline \
+			--mapout ${sample_id}.bowtie2.bz2 \
+			--db_dir ${metaphlan_db_path} --tmp_dir tmp/ \
+			--offline \
 			-o metaphlan_${sample_id}.out
 	else
 		metaphlan ${reads[0]},${reads[1]} \
 			--input_type fastq --nproc $task.cpus \
-			--bowtie2out ${sample_id}.bowtie2.bz2 \
-			--bowtie2db ${metaphlan_db_path} --tmp_dir tmp/ \
-			--unclassified_estimation --offline \
+			--mapout ${sample_id}.bowtie2.bz2 \
+			--db_dir ${metaphlan_db_path} --tmp_dir tmp/ \
+			--offline \
 			-o metaphlan_${sample_id}.out
 	fi
 
