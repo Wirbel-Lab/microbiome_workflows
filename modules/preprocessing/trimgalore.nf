@@ -38,7 +38,7 @@ process trimgalore {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        trim_galore: \$( trim_galore -V sed -e "s/trim_galore //g" )
+        trim_galore: \$( trim_galore -V | sed -e "s/trim_galore //g" )
     END_VERSIONS
 
     """
