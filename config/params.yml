@@ -62,11 +62,10 @@ min_lr_qual: 10
 # parameters for mOTUs2
 motus_map_mgs_cutoff: 2
 motus_min_len_align_length: 75
-motus_db_path: "/<path-to-your-databases>/motus_db/3.0.3/db_mOTU/"
-motus_gtdb_path: "/<path-to-your-databases>/motus_db/3.0.3/mOTUs_3.0.0_GTDB_tax.tsv"
+motus_db_path: "/<path-to-your-databases>/motus_db/v4.1.0/"
 
 # parameters for metaphlan
-metaphlan_db_path: "/<path-to-your-databases>/metaphlan_db/vJan21/"
+metaphlan_db_path: "/<path-to-your-databases>/metaphlan_db/vJan26/"
 
 # parameters for sylph
 sylph_db_path: "/<path-to-your-databases>/sylph_db/gtbd-r323/gtdb-r232-c200-dbv2.syl2db"
