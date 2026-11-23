@@ -93,7 +93,7 @@ gtdb_db_path: "/<path-to-your-databases>/GTDBTK/release323/"
 # Viral classification databases
 
 # geNomad database
-genomad_db_path: "/<path-to-your-databases>/genomad_db/v1.7/"
+genomad_db_path: "/<path-to-your-databases>/genomad_db/v1.9/"
 
 # VIBRANT database
 vibrant_db_path: "/<path-to-your-databases>/vibrant_db/v1.2.1"
